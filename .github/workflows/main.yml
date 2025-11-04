@@ -23,15 +23,9 @@ jobs:
           cache: 'npm'
 
       # Step 3: Install dependencies
+      # 👇 using npm install instead of npm ci
       - name: Install dependencies
-        run: |
-          if [ -f package-lock.json ]; then
-            echo "Found package-lock.json — using npm ci"
-            npm ci
-          else
-            echo "No lock file found — using npm install"
-            npm install
-          fi
+        run: npm install
 
       # Step 4: Run unit tests
       - name: Run unit tests
