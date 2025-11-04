@@ -1,0 +1,54 @@
+name: Node.js CI Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build and Test Node.js Project
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the repository code
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Step 2: Set up Node.js environment
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'     # you can adjust Node.js version
+          cache: 'npm'
+
+      # Step 3: Install dependencies
+      - name: Install dependencies
+        run: npm ci
+        # (use npm install if you don’t have package-lock.json)
+
+      # Step 4: Run unit tests
+      - name: Run unit tests
+        run: npm test
+
+      # Step 5: Build the project
+      - name: Build project
+        run: npm run build
+        # ensure "build" script is defined in package.json
+
+      # Step 6: List build artifacts
+      - name: List build artifacts
+        run: |
+          echo "Contents of build directory:"
+          ls -R build || echo "No build directory found"
+          echo "Other generated files:"
+          ls -R dist || echo "No dist directory found"
+
+      # Step 7: Upload build artifacts (optional)
+      - name: Upload build output
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifacts
+          path: |
+            build/
+            dist/
