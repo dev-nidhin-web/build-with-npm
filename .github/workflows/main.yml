@@ -11,15 +11,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout the repository code
+      # Step 1: Checkout your repository
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Step 2: Set up Node.js environment
+      # Step 2: Setup Node.js
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'     # you can adjust Node.js version
+          node-version: '20'
           cache: 'npm'
 
       # Step 3: Install dependencies
@@ -34,18 +34,15 @@ jobs:
       # Step 5: Build the project
       - name: Build project
         run: npm run build
-        # ensure "build" script is defined in package.json
 
-      # Step 6: List build artifacts
+      # Step 6: List the build artifacts
       - name: List build artifacts
         run: |
           echo "Contents of build directory:"
-          ls -R build || echo "No build directory found"
-          echo "Other generated files:"
-          ls -R dist || echo "No dist directory found"
+          ls -R build || ls -R dist || echo "No build folder found"
 
-      # Step 7: Upload build artifacts (optional)
-      - name: Upload build output
+      # Step 7 (optional): Upload artifacts
+      - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
           name: build-artifacts
